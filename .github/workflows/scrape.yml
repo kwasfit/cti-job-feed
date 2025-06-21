@@ -1,0 +1,28 @@
+name: CTI Job Feed Scraper
+
+on:
+  schedule:
+    - cron: '10 01 * * 1'  # runs every day at 10 AM Eastern
+  workflow_dispatch:      # allows manual runs too
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create creds.json from secret
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > cti-job-feed-3b4b4d4a2449.json
+
+      - name: Run scraper
+        run: node scrape-and-push.js
