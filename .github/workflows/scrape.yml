@@ -2,8 +2,8 @@ name: CTI Job Feed Scraper
 
 on:
   schedule:
-    - cron: '10 01 * * 1'  # Every Monday at 1:10 AM UTC
-  workflow_dispatch:      # Manual trigger available too
+    - cron: '10 01 * * 1'  # runs every Monday at 10 AM Eastern
+  workflow_dispatch:       # allows manual runs
 
 jobs:
   scrape:
@@ -27,25 +27,17 @@ jobs:
       - name: Run scraper
         run: node scrape-and-push.js
 
-      - name: Generate RSS Feed
-        run: node ./generate-feed.js
+      - name: Generate RSS feed
+        run: node generate-feed.js
 
-      - name: Commit updated RSS feed
+      - name: Push changes back to GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
           git add feed.xml
           git commit -m "🔁 Update RSS feed" || echo "No changes to commit"
           git push
-
-      - name: Commit and push RSS feed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/feed.xml
-          git commit -m "🤖 Auto-update RSS feed"
-          git push
-        env:
-          # Needed for GitHub Actions to push
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
