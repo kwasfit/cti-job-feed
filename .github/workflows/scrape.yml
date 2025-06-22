@@ -36,7 +36,10 @@ jobs:
         run: |
           git config user.name "kwasfit"
           git config user.email "jenniferakwas@gmail.com"
-          git remote set-url origin https://kwasfit:${GH_PAT}@github.com/kwasfit/cti-job-feed.git
+          
+          echo "🧹 Removing and re-adding origin..."
+          git remote remove origin
+          git remote add origin https://kwasfit:${GH_PAT}@github.com/kwasfit/cti-job-feed.git
 
           echo "🔍 Checking remote config:"
           git remote -v
