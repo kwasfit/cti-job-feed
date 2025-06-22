@@ -30,14 +30,13 @@ jobs:
       - name: Generate RSS feed
         run: node generate-feed.js
 
-      - name: Push changes back to GitHub
+      - name: Set up Git and Push feed.xml
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}  # This must match your repo secret name exactly
         run: |
           git config user.name "kwasfit"
           git config user.email "jenniferakwas@gmail.com"
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
           git add feed.xml
-          git commit -m "🔁 Update RSS feed" || echo "No changes to commit"
-          git push
-
+          git commit -m "🔁 Update RSS feed" || echo "Nothing to commit"
+          git push origin main
