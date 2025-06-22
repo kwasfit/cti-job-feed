@@ -35,4 +35,8 @@ jobs:
         with:
           commit_message: "🔁 Update RSS feed"
           file_pattern: feed.xml
-          token: ${{ secrets.GH_PAT }}  # <-- THIS LINE DOES THE MAGIC
+          push_options: --force
+          commit_user_name: kwasfit
+          commit_user_email: jenniferakwas@gmail.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
