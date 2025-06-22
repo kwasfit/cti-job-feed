@@ -35,5 +35,4 @@ jobs:
         with:
           commit_message: "🔁 Update RSS feed"
           file_pattern: feed.xml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT }}  # <-- THIS LINE DOES THE MAGIC
