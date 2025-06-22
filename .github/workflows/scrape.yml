@@ -28,7 +28,7 @@ jobs:
         run: node scrape-and-push.js
 
       - name: Generate RSS Feed
-        run: node generate-feed.js
+        run: node ./generate-feed.js
 
       - name: Commit and push RSS feed
         run: |
